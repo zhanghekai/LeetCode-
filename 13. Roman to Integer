@@ -66,6 +66,6 @@ class Solution:
             else:
                 summ -= strnum.get(s[i])
         
-        summ += strnum.get(s[l-1])
+        summ += strnum.get(s[-1])
         
         return(summ)
