@@ -49,3 +49,23 @@ Example 5:
   Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
   
 ========================================================================================================================================
+
+class Solution:
+    def romanToInt(self, s: str) -> int:
+        
+        # 减法时左边的数肯定比右边的小
+        # i > i+1,则加i；i < i+1,则减i；i为最后一位，则加i
+        # 用字典将字符与数字一一对应
+        
+        strnum = {'I':1,'V':5,'X':10,'L':50,'C':100,'D':500,'M':1000}
+        l = len(s) 
+        summ = 0
+        for i in range(l-1):# 这样当前位置和后一位比较时不会溢出，最后一位直接加即可
+            if strnum.get(s[i]) >= strnum.get(s[i+1]):
+                summ += strnum.get(s[i])
+            else:
+                summ -= strnum.get(s[i])
+        
+        summ += strnum.get(s[l-1])
+        
+        return(summ)
