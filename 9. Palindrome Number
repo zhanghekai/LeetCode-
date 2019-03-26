@@ -52,14 +52,15 @@ class Solution:
         # 我们如何知道反转数字的位数已经达到原始数字位数的一半？我们将原始数字除以 10，然后给反转后的数字乘上 10，
         # 所以，当原始数字小于反转后的数字时，就意味着我们已经处理了一半位数的数字。
         
-        if x < 0 or x % 10 == 0: # 凡是10的整数倍都不是回文数
+        if x < 0 or (x % 10 == 0 and x != 0): # 凡是10的整数倍都不是回文数,但0除外，0是回文数
             return False
         else:
             reversenumber = 0 # 记录反转后的数值
             while(x > reversenumber) : # 若原始数字大于反转后的数字，则循环
                 reversenumber = reversenumber * 10 + x % 10 # 由于x为任意可以被10整除时余数都为0，这种情况更新不了reversenumber
-                                                            # 但好在上面的if中已给出判定
+                                                            # 但好在上面的if中以给出判定
                 x = x // 10
 
             # 由于会有12321这种情况，这是反转后记录为123，原始记录为12，需要再次判定
             return (x == reversenumber) or (x == reversenumber // 10)
+        
