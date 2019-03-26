@@ -1,0 +1,65 @@
+Determine whether an integer is a palindrome. An integer is a palindrome when it reads the same backward as forward.
+判断一个整数是否是回文数。回文数是指正序（从左向右）和倒序（从右向左）都是一样的整数。
+
+Follow up:Coud you solve it without converting the integer to a string?
+进阶：不使用字符串来解决这个问题。
+
+Example 1:                 
+  Input: 121
+  Output: true
+
+Example 2: 
+  Input: -121
+  Output: false
+  Explanation: From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome.
+
+Example :
+  Input: 10
+  Output: false
+  Explanation: Reads 01 from right to left. Therefore it is not a palindrome.
+  
+=========================================================================================================================================
+
+========字符串方法========
+
+class Solution:
+    def isPalindrome(self, x: int) -> bool:
+        
+        # 使用字符串方法
+        y = str(x)[::-1] # 将x转变为字符串并进行反转操作，
+                         # 由于x可能是负数，所以不能强制转换为int，否则会出错
+        x_ = str(x) # 由于y是字符串类型，为了可以比较，需要将x也变为字符串类型
+        return x_ == y
+       
+=========================================================================================================================================
+
+=======反转一半数字=======
+
+class Solution:
+    def isPalindrome(self, x: int) -> bool:
+        
+        # 反转一半的数字
+        
+        # 例如，输入 1221，我们可以将数字“1221”的后半部分从“21”反转为“12”，并将其与前半部分“12”进行比较，
+        # 因为二者相同，我们得知数字 1221 是回文。
+        
+        # 首先，我们应该处理一些临界情况。所有负数都不可能是回文，例如：-123 不是回文，因为 - 不等于 3。
+        # 所以我们可以对所有负数返回 false。现在，让我们来考虑如何反转后半部分的数字。 对于数字 1221，
+        # 如果执行 1221 % 10，我们将得到最后一位数字 1，要得到倒数第二位数字，我们可以先通过除以 10 把
+        # 最后一位数字从 1221 中移除，1221 / 10 = 122，再求出上一步结果除以10的余数，122 % 10 = 2，
+        # 就可以得到倒数第二位数字。如果我们把最后一位数字乘以10，再加上倒数第二位数字，1 * 10 + 2 = 12，
+        # 就得到了我们想要的反转后的数字。 如果继续这个过程，我们将得到更多位数的反转数字。现在的问题是，
+        # 我们如何知道反转数字的位数已经达到原始数字位数的一半？我们将原始数字除以 10，然后给反转后的数字乘上 10，
+        # 所以，当原始数字小于反转后的数字时，就意味着我们已经处理了一半位数的数字。
+        
+        if x < 0 :
+            return False
+        else:
+            reversenumber = 0 # 记录反转后的数值
+            while(x > reversenumber) : # 若原始数字大于反转后的数字，则循环
+                reversenumber = reversenumber * 10 + x % 10 
+                x = x // 10
+
+            # 由于会有12321这种情况，这是反转后记录为123，原始记录为12，需要再次判定
+            return (x == reversenumber) or (x == reversenumber // 10)
+        
