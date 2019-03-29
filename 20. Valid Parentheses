@@ -1,0 +1,90 @@
+Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+An input string is valid if:
+  1.Open brackets must be closed by the same type of brackets.
+  2.Open brackets must be closed in the correct order.
+Note that an empty string is also considered valid.
+给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
+有效字符串需满足：
+  1.左括号必须用相同类型的右括号闭合。
+  2.左括号必须以正确的顺序闭合。
+注意空字符串可被认为是有效字符串。
+
+Example 1:
+  Input: "()"
+  Output: true
+
+Example 2:
+  Input: "()[]{}"
+  Output: true
+  
+Example 3:
+  Input: "(]"
+  Output: false
+  
+Example 4:
+  Input: "([)]"
+  Output: false
+  
+Example 5:
+  Input: "{[]}"
+  Output: true
+=========================================================================================================================================
+
+****** 思路清晰但十分麻烦的方法 ******
+class Solution:
+    def isValid(self, s: str) -> bool:
+        
+        # 思路清晰但十分麻烦的方法
+        
+        # 使用桟。遍历字符串s，如果s[i]是左括号，压入栈；
+        # 如果s[i]是右括号，取栈中栈顶元素匹配；
+        # 匹配成功弹出栈顶元素；匹配失败返回False；
+        # 直到栈为空，返回True
+        
+        # 1.输入不匹配：[}
+        # 2.输入为空：""
+        # 3.只输入单个：[ or }
+        # 4.正确输入间有空格：(   )
+        
+        # 这种对应关系用字典较好
+        dict_map = {')':'(', '}':'{', ']':'['}
+        stack = [] # 定义栈
+        
+        if s == '': # 注意：空字符串可被认为是有效字符串
+            return True
+        
+        for char in s :
+            if char == ' ' :# 如果s中有空格，则跳过着个空格进行下一步，避免正确输入间有空格的情况，
+                            # 但是LeetCode认为正确匹配间有空格也为False
+                continue
+            else:
+                if char in dict_map: # 如果char是右括号
+                    if stack == []: # 如果一开始就是右括号，则返回False
+                        return False
+                    else:
+                        stack_top = stack.pop() # 弹出并取值栈顶元素
+                        if dict_map[char] != stack_top : # 不匹配则返回False
+                            return False    
+                else: # 如果char是左括号，则加入栈
+                    stack.append(char)
+        
+        return not stack # 避免出现单个[、{、(无配对的情况，判断栈是否为空，若不为空则返回false
+        
+        
+=======================================================================================================================================
+
+****** 十分取巧但能通过LeetCode测试的方法 ******
+class Solution:
+    def isValid(self, s: str) -> bool:
+        
+        if s == '':
+            return True # 空字符串可被认为是有效字符串。
+        else:
+            while('()' in s or '{}' in s or '[]' in s): # 如果s中有匹配的括号，就一直替换（也可以说是删除）
+                s = s.replace('()','')
+                s = s.replace('[]','')
+                s = s.replace('{}','')
+        
+        return not s # 最后看s中是为空，为空表示全部匹配，返回True；否则表示存在不匹配项，返回False
+    
+    # 这种取巧的方法只供给大家提供思路，但仍存在不足，比如当匹配的括号间有空格时(   ) ，这种方法就不再适用
