@@ -1,0 +1,50 @@
+Given an integer, write a function to determine if it is a power of two.
+给定一个整数，编写一个函数来判断它是否是 2 的幂次方。
+
+
+Example 1:                            Example 2:                              Example 3:
+  Input: 1                              Input: 16                               Input: 218
+  Output: true                          Output: true                             Output: false
+  Explanation: 20 = 1                   Explanation: 24 = 16
+  
+
+=======================================================================================================================================
+ 
+==========二进制解法==========
+class Solution:
+    def isPowerOfTwo(self, n: int) -> bool:
+        # 二进制表示法
+        # 若n是偶数，则它的二进制表示：最高位为1，其余位为0，二进制总长为m
+        # 且，n-1的二进制：总长为m-1，这m-1位均为1
+        # 将n和n-1进行“与”操作，结果为0
+        
+        # 按位与（&）操作——（快速取模算法）：
+        # 由于位运算直接对内存数据进行操作，不需要转成十进制，直接对二进制进行操作
+        
+        if n <= 0:
+            return False
+        
+        if n&(n-1) == 0:
+            return True
+        else :
+            return False
+
+========================================================================================================================================
+
+============十进制解法=============
+class Solution:
+    def isPowerOfTwo(self, n: int) -> bool:
+        # 十进制:迭代法
+        
+        if n <= 0:
+            return False
+        
+        while n > 1:
+            if n % 2 == 0:# 首先判断n是否是偶数，若n不是偶数，则一定不符合
+                # 若n是偶数，则除以2，继续迭代
+                n = n / 2
+            else :return False
+        # 这里没有判断n为1的情况，默认n=1时为True
+        return True
+  
+
